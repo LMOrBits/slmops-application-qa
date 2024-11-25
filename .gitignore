@@ -1,0 +1,75 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.swp
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.envs/
+
+# Logs
+*.log
+logs/
+*.out
+*.err
+
+# Virtual environments
+venv/
+.venv/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Database
+*.sqlite3
+*.db
+
+# Pytest
+.cache/
+.coverage
+nosetests.xml
+coverage.xml
+*.lprof
+*.cover
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# React
+node_modules/
+build/
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Production
+build/
+dist/
+
+# Static files
+*.lock
+
+# Generated files
+.DS_Store
+Thumbs.db
+
+# Others (if applicable)
+*.iml
+*.hprof
+*.orig
+*.rej
+*.swo
+*.swn
