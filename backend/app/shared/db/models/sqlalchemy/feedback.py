@@ -1,5 +1,7 @@
-from sqlmodel import Field, SQLModel, Relationship
 import uuid
+
+from sqlmodel import Field, Relationship, SQLModel
+
 
 class Feedback(SQLModel, table=True):
     __tablename__ = "feedback"
@@ -11,4 +13,4 @@ class Feedback(SQLModel, table=True):
     feedback_selection: str = Field(default=None, nullable=True)
 
     message: "Message" = Relationship(back_populates="feedback")
-    user: "User" = Relationship(back_populates="feedbacks") 
+    user: "User" = Relationship(back_populates="feedbacks")

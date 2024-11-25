@@ -1,23 +1,26 @@
-from typing import List
-from sqlmodel import select
 import uuid
-from typing import Tuple
-from app.shared.db.models.sqlalchemy import Chat,Message, User,Cookie
+from datetime import datetime, timezone
+
+from sqlmodel import select
+
 from app.shared.db.init import session_scope
-from datetime import datetime,timezone
+from app.shared.db.models.sqlalchemy import Cookie, User
+
 
 class CookiesService:
     @classmethod
     def get_user_by_cookie(cls, cookie_id: uuid.UUID) -> uuid.UUID:
         with session_scope() as session:
             statement = select(Cookie.user_id).where(Cookie.Id == cookie_id)
-            return session.exec(statement).first() 
-    
+            return session.exec(statement).first()
+
     @classmethod
-    def create_user_by_cookie(cls) -> Tuple[uuid.UUID,uuid.UUID]:
+    def create_user_by_cookie(cls) -> tuple[uuid.UUID, uuid.UUID]:
         with session_scope() as session:
             new_user = User()
-            new_cookie = Cookie(created_at=datetime.now(timezone.utc),user_id=new_user.Id)
+            new_cookie = Cookie(
+                created_at=datetime.now(timezone.utc), user_id=new_user.Id
+            )
             session.add(new_user)
             session.add(new_cookie)
-            return new_user.Id,new_cookie.Id
+            return new_user.Id, new_cookie.Id

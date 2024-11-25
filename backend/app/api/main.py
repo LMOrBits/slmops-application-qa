@@ -3,8 +3,9 @@ from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
 
-from app.shared.config import settings
 from app.api.routes import collect_all_routers
+from app.shared.config import settings
+
 
 def custom_generate_unique_id(route: APIRoute) -> str:
     return f"{route.tags[0]}-{route.name}"
@@ -30,6 +31,5 @@ if settings.all_cors_origins:
     )
 
 for route in collect_all_routers():
-    route.routes = [r for r in route.routes if "/mock/" not in getattr(r, 'path', '')]
+    route.routes = [r for r in route.routes if "/mock/" not in getattr(r, "path", "")]
     app.include_router(route)
-

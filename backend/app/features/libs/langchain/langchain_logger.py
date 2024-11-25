@@ -1,4 +1,3 @@
-
 # from typing import Any, Dict, List
 # from langchain_core.callbacks import BaseCallbackHandler
 # from langchain_core.outputs import LLMResult
@@ -10,10 +9,10 @@
 #         super().__init__()
 #         self.logger = logger
 #         self.timers = {}
-    
+
 #     def _start_timer(self, tag: str) -> None:
 #         self.timers[tag] = time.perf_counter()
-    
+
 #     def _end_timer(self, tag: str) -> float:
 #         if tag in self.timers:
 #             elapsed = time.perf_counter() - self.timers[tag]
@@ -36,7 +35,7 @@
 #     def on_llm_start(
 #         self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
 #     ) -> None:
-  
+
 #         llm_name = serialized.get("name", "unnamed_llm")
 #         self._start_timer(f"llm_{kwargs.get('run_id', llm_name)}")
 #         self.logger.info(f"LLM '{kwargs.get('tags', [])[-1]}' started")
@@ -45,7 +44,7 @@
 #         llm_name = kwargs.get("run_id", "unnamed_llm")
 #         elapsed = self._end_timer(f"llm_{llm_name}")
 #         self.logger.log("TIME",f"LLM '{kwargs.get('tags', [])[-1]}' completed in {elapsed:.2f} seconds")
-        
+
 #     @classmethod
 #     def generate_callback_with_tag(cls, logger,tag:str):
 #         handler_instance = cls(logger)

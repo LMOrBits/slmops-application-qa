@@ -1,10 +1,11 @@
 import secrets
 import warnings
+from pathlib import Path
 from typing import Annotated, Any, Literal
 
 from dotenv import load_dotenv
-from pathlib import Path
-load_dotenv(Path(__file__).parent.parent.parent /".env",override=True)
+
+load_dotenv(Path(__file__).parent.parent.parent / ".env", override=True)
 
 from pydantic import (
     AnyUrl,
@@ -123,5 +124,6 @@ class Settings(BaseSettings):
         return self
 
     CHAT_DB: str = "chat"
-    
+
+
 settings = Settings()  # type: ignore

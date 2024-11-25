@@ -1,8 +1,10 @@
-import os
 import importlib.util
+import os
+
 from app.shared.log.log_config import get_logger
 
 logger = get_logger()
+
 
 def load_router_from_file(file_path, collected_routes: list):
     """Check if a file is a Python module with a 'router' attribute and add it to collected_routes."""
@@ -18,6 +20,7 @@ def load_router_from_file(file_path, collected_routes: list):
         except Exception as error:
             logger.error(f"Failed to load module {module_name}: {error}")
 
+
 def collect_all_routers(directory):
     """Recursively collect all routers from Python files in the specified directory."""
     current_directory = os.path.dirname(__file__)
@@ -30,6 +33,8 @@ def collect_all_routers(directory):
         if os.path.isdir(file_path):
             collect_all_routers(os.path.join(directory, file))
         else:
-            logger.info(f"Retrieving routers from: api{file_path.split(current_directory)[1]}")
+            logger.info(
+                f"Retrieving routers from: api{file_path.split(current_directory)[1]}"
+            )
             load_router_from_file(file_path, collected_routes)
     return collected_routes

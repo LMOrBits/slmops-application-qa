@@ -1,17 +1,18 @@
-from typing import List
-from sqlmodel import select
 import uuid
 
-from app.shared.db.models.sqlalchemy import Chat,Message, Feedback, User
+from sqlmodel import select
+
 from app.shared.db.init import session_scope
+from app.shared.db.models.sqlalchemy import Feedback
 
 
 class FeedbackService:
-
     @classmethod
-    def create_feedback(cls, message_id: uuid.UUID, rating: int, user_id: uuid.UUID) -> uuid.UUID:
+    def create_feedback(
+        cls, message_id: uuid.UUID, rating: int, user_id: uuid.UUID
+    ) -> uuid.UUID:
         with session_scope() as session:
-            feedback = Feedback(message_id=message_id, rating=rating ,user_id=user_id)
+            feedback = Feedback(message_id=message_id, rating=rating, user_id=user_id)
             session.add(feedback)
             return feedback.Id
 

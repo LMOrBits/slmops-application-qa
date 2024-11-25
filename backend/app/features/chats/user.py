@@ -1,9 +1,6 @@
-from typing import List
-from sqlmodel import select
-import uuid
 
-from app.shared.db.models.sqlalchemy import Chat,Message, Feedback, User
 from app.shared.db.init import session_scope
+from app.shared.db.models.sqlalchemy import User
 
 
 class UserService:
