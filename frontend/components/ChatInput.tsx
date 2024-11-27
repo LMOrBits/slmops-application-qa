@@ -29,9 +29,10 @@ export const ChatInput = ({
   isLoading,
 }: ChatInputProps) => {
   return (
-    <div className="z-10 fixed bottom-0 left-0 w-full mx-auto">
+    <div className="sticky z-10 bottom-0 2xl:px-[10vw] xl:px-[10vw] lg:px-[10vw] md:px-[20px] px-[12px] w-full mx-auto">
+      <div className="fixed z-9 bottom-0 w-full h-16 bg-background"></div>
       <div className="mx-2 flex flex-row gap-3 md:mx-4 md:last:mb-6 lg:mx-auto lg:max-w-2xl xl:max-w-3xl">
-        <div className="relative flex h-full lg:max-w-[700px] sm:max-w-[100vw] xs:max-w-[100vw] flex-1 items-stretch md:flex-col">
+        <div className="relative flex h-full px-[20px] flex-1 items-stretch md:flex-col">
           <div className="w-full mx-auto mb-6">
             <form onSubmit={handleSubmit} className="relative">
               <Textarea

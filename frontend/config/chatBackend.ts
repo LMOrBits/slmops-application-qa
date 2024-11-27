@@ -4,4 +4,6 @@ export const redisConfig = {
   password: process.env.REDIS_PASSWORD || "",
 } as const;
 
-export default { redisConfig };
+export const CHAT_API_URL = process.env.CHAT_API_URL || "http://localhost:8000";
+
+export default { redisConfig, CHAT_API_URL };

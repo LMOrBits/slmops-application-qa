@@ -27,5 +27,6 @@ class Message(SQLModel, table=True):
             "message_text": self.message_text,
             "created_at": self.created_at,
             "user_id": self.user_id,
+            "role": "user" if self.user_id != uuid.UUID(int=0) else "ai",
             "message_type": self.message_type,
         }

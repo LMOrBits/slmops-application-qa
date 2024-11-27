@@ -5,12 +5,16 @@ import { Messages } from "./messages/Messages";
 import { ChatInput } from "./ChatInput";
 
 export const ChatWrapper = ({
-  sessionId,
+  chatId,
   initialMessages,
 }: {
-  sessionId: string;
+  chatId: string;
   initialMessages: Message[];
 }) => {
+  if (!chatId) {
+    return null;
+  }
+
   const {
     messages,
     handleInputChange,
@@ -21,12 +25,13 @@ export const ChatWrapper = ({
     stop,
   } = useChat({
     api: "/api/chat-stream",
-    body: { sessionId },
+    body: { chatId },
     initialMessages,
   });
 
+  console.log(chatId);
   return (
-    <div className="dark relative h-[100vh] min-h-[100dvh] flex flex-col justify-between gap-4 md:gap-7">
+    <div className="dark relative pt-[60px] h-[100dvh] overflow-y-auto flex flex-col justify-between gap-4 md:gap-7">
       <div className="flex-1   justify-between flex flex-col">
         <Messages messages={messages} isLoading={isLoading} />
       </div>

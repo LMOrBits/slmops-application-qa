@@ -16,15 +16,15 @@ def load_router_from_file(file_path, collected_routes: list):
             spec.loader.exec_module(module)
             if hasattr(module, "router"):
                 collected_routes.append(module.router)
-            return collected_routes
         except Exception as error:
             logger.error(f"Failed to load module {module_name}: {error}")
 
 
-def collect_all_routers(directory):
+def collect_all_routers():
     """Recursively collect all routers from Python files in the specified directory."""
-    current_directory = os.path.dirname(__file__)
-    target_directory = os.path.join(current_directory, directory)
+    directory = os.path.dirname(__file__)
+    # target_directory = os.path.join(current_directory, directory)
+    target_directory = directory
     collected_routes = []
     for file in os.listdir(target_directory):
         if file.startswith("_"):
@@ -34,7 +34,7 @@ def collect_all_routers(directory):
             collect_all_routers(os.path.join(directory, file))
         else:
             logger.info(
-                f"Retrieving routers from: api{file_path.split(current_directory)[1]}"
+                f"Retrieving routers from: api{file_path.split(directory)[1]}"
             )
             load_router_from_file(file_path, collected_routes)
     return collected_routes

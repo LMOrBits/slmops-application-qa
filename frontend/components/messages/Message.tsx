@@ -14,7 +14,7 @@ export const Message = ({
 }: MessageProps) => {
   return (
     <div className="lg:p-6 sm:p-4 xs:px-3 py-4 ">
-      <div className="max-w-3xl mx-auto flex items-start">
+      <div className="max-w-3xl mx-auto flex items-end">
         {isUserMessage ? (
           <UserMessage content={content} isUserMessage={true} />
         ) : (

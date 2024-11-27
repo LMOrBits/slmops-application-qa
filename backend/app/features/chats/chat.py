@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from sqlmodel import select
+from sqlmodel import select, func
 
 from app.shared.db.init import session_scope
 from app.shared.db.models.sqlalchemy import Chat, Feedback, Message
@@ -14,11 +14,39 @@ class ChatService:
             chat = Chat(user_id=user_id, created_at=created_at)
             session.add(chat)
             return chat.Id
+        
+    @classmethod
+    def get_last_chat_for_user(cls, user_id: uuid.UUID) -> uuid.UUID:
+        with session_scope() as session:
+            statement = select(Chat.Id).where(Chat.user_id == user_id).order_by(Chat.created_at.desc()).limit(1)
+            return session.exec(statement).first()
+    @classmethod
+    def delete_all_messages_for_chat(cls, chat_id: uuid.UUID) -> bool:
+        with session_scope() as session:
+            statement = select(Message).where(Message.chat_id == chat_id)
+            messages = session.exec(statement).all()
+            for message in messages:
+                session.delete(message)
+            return True 
 
     @classmethod
     def get_chats_ids_for_user(cls, user_id: uuid.UUID) -> list[uuid.UUID]:
         with session_scope() as session:
-            statement = select(Chat.Id).where(Chat.user_id == user_id)
+            # First get count of messages per chat
+            # Get chats with message count > 1
+            # statement = (
+            #     select(Chat.Id, Message)
+            #     .join(Message, Message.chat_id == Chat.Id)
+            #     .where(Chat.user_id == user_id)
+            #     .group_by(Chat.Id, Message.Id)
+            #     .having(func.count(Message.Id) > 1)
+            #     .order_by(Message.created_at.asc())
+            # )
+            # result = session.exec(statement).all()
+            # valid_chats = [{"chat_id": chat_id, "message": message} for chat_id, message in result]
+            # return valid_chats
+
+            statement = select(Chat.Id).where(Chat.user_id == user_id).order_by(Chat.created_at.desc())
             return session.exec(statement).all()
 
     @classmethod

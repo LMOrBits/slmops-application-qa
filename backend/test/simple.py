@@ -1,4 +1,6 @@
+from base64 import b64encode, b64decode
 from datetime import datetime
+from uuid import UUID
 
 from app.features.chats import (
     ChatService,
@@ -11,6 +13,11 @@ from app.shared.log.log_config import get_logger
 logger = get_logger()
 new_user_id, new_cookie_id = CookiesService.create_user_by_cookie()
 logger.info(f"{new_user_id=}")
+logger.info(f"{new_cookie_id=}")
+encoded_cookie = b64encode(new_cookie_id.bytes).decode()
+logger.info(f"{encoded_cookie=}")
+decoded_cookie = UUID(bytes=b64decode(encoded_cookie))
+logger.info(f"{decoded_cookie=}")
 new_chat_id = ChatService.create_chat(user_id=new_user_id, created_at=datetime.now())
 logger.info(f"{new_chat_id=}")
 ChatService.delete_chat(new_chat_id)

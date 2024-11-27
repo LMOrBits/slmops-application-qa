@@ -2,7 +2,7 @@ from uuid import UUID
 
 from sqlmodel import Session, SQLModel, select
 
-from app.shared.db.models.sqlalchemy import User
+
 from app.shared.log.log_config import get_logger
 from sqlalchemy.engine import Engine
 
@@ -16,6 +16,7 @@ class SessionManager:
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
             cls._instance = super(SessionManager, cls).__new__(cls)
+
         return cls._instance
 
     def __init__(self, engine: Engine):
@@ -33,10 +34,10 @@ class SessionManager:
 
 
 def ensure_default_user(session: Session):
+    from app.shared.db.models.sqlalchemy import User
     default_uuid = UUID(int=0)
     statement = select(User).where(User.Id == default_uuid)
     default_user_exist = session.exec(statement).first()
-    logger.info(f"Default user exists: {default_user_exist is not None}")
     if default_user_exist is None:
         default_user = User(
             Id=default_uuid,  # Corrected field name to match the User model

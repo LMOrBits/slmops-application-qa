@@ -11,8 +11,9 @@ logger = get_logger()
 logger.info(f"Connecting to database: {settings.SQLALCHEMY_DATABASE_URI}")
 engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI))
 logger.info("Database connected")
-SessionManager(engine)
-logger.info("Session manager created")
+if engine:  
+    SessionManager(engine)
+    logger.info("Session manager created")
 
 
 @contextmanager

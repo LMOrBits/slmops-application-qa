@@ -3,7 +3,7 @@
 
 "use client";
 
-import { FC, memo, useCallback } from "react";
+import { FC, memo, useCallback, useMemo } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { coldarkDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import showdown from "showdown";
@@ -54,20 +54,30 @@ export const programmingLanguages: languageMap = {
 const CodeBlock: FC<Props> = memo(({ language, value }) => {
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
 
-  const converter = new showdown.Converter({
-    tables: true,
-    simplifiedAutoLink: true,
-    strikethrough: true,
-    tasklists: true,
-  });
+  const converter = useMemo(
+    () =>
+      new showdown.Converter({
+        tables: true,
+        simplifiedAutoLink: true,
+        strikethrough: true,
+        tasklists: true,
+      }),
+    []
+  );
 
-  const processedValue =
-    language === "markdown" ? converter.makeHtml(value) : value;
+  const processedValue = useMemo(
+    () => (language === "markdown" ? converter.makeHtml(value) : value),
+    [language, value, converter]
+  );
+
+  const fileExtension = useMemo(
+    () => programmingLanguages[language] || ".file",
+    [language]
+  );
 
   const downloadAsFile = useCallback(() => {
     if (typeof window === "undefined") return;
 
-    const fileExtension = programmingLanguages[language] || ".file";
     const suggestedFileName = `file-${generateId()}${fileExtension}`;
     const fileName = window.prompt("Enter file name" || "", suggestedFileName);
 
@@ -83,7 +93,7 @@ const CodeBlock: FC<Props> = memo(({ language, value }) => {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-  }, [language, value]);
+  }, [fileExtension, value]);
 
   const onCopy = useCallback(() => {
     if (!isCopied) {

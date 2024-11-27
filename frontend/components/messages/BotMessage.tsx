@@ -81,15 +81,18 @@ export const BotMessage = memo(({ content, isLoading }: MessageProps) => {
       </div>
       <div className="flex flex-col max-w-[80%] pt-2">
         <AnimatePresence>
-          {isLoading && !content?.length ? (
+          {isLoading ? (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="w-full flex flex-col pt-1 gap-2 "
+              className="w-full flex flex-row pt-1 gap-2 flex-wrap "
             >
-              <Skeleton className="h-3  w-3/5 rounded-lg" />
-              <Skeleton className="h-3 w-4/5 rounded-lg" />
+              <Skeleton className="h-3  w-1/5 rounded-lg" />
+              <Skeleton className="h-3 w-2/5 rounded-lg" />
+              <Skeleton className="h-3 w-2/5 rounded-lg" />
+              <Skeleton className="h-3 w-3/5 rounded-lg" />
+              <Skeleton className="h-3 w-1/5 rounded-lg" />
             </motion.div>
           ) : (
             <ReactMarkdown

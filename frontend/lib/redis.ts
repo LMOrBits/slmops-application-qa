@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-import { redisConfig } from "@/config/redis";
+import { redisConfig } from "@/config/chatBackend";
 
 export const redis = new Redis(Number(redisConfig.port), redisConfig.host);
 

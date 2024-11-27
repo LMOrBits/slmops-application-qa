@@ -8,7 +8,11 @@ interface MessagesProps {
   messages: TMessage[];
   isLoading: boolean;
 }
-
+declare global {
+  interface Window {
+    MyNamespace: any;
+  }
+}
 export const Messages = ({ messages, isLoading }: MessagesProps) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -42,28 +46,39 @@ export const Messages = ({ messages, isLoading }: MessagesProps) => {
     <div
       ref={messagesEndRef}
       className={cn(
-        "flex flex-1 flex-col overflow-y-auto pb-[20vh]",
-        "lg:w-[60vw] md:w-[80vw] sm:w-[100dvw] xs:w-[100dvw]",
-        "md:mx-auto xs:m-0",
-        {
-          "max-h-[calc(100dvh-8rem)] min-h-[calc(50dvh-8rem)]":
-            (window?.visualViewport?.height ?? window.innerHeight) <
-            window.innerHeight,
-          "max-h-[calc(100dvh-3.5rem-2rem)] min-h-[calc(50dvh-3.5rem-2rem)]":
-            (window?.visualViewport?.height ?? window.innerHeight) >=
-            window.innerHeight,
-        }
+        "flex flex-1 flex-col overflow-y-auto pb-[40vh] ",
+        "2xl:px-[10vw] xl:px-[10vw] lg:px-[10vw] md:px-[20px] px-[12px]",
+        "max-h-[calc(100dvh)] min-h-[calc(50dvh-3rem)]",
+        "md:px-auto xs:m-0"
+        // {
+        //   "max-h-[calc(100dvh-8rem)] min-h-[calc(50dvh-8rem)]":
+        //     (window.visualViewport?.height ?? window.innerHeight) <
+        //     window.innerHeight,
+        //   "max-h-[calc(100dvh-3.5rem-2rem)] min-h-[calc(50dvh-3.5rem-2rem)]":
+        //     (window.visualViewport?.height ?? window.innerHeight) >=
+        //     window.innerHeight,
+        // }
       )}
     >
       {messages.length || isLoading ? (
-        messages.map((message, i) => (
-          <Message
-            key={i}
-            content={message.content}
-            isLoading={isLoading && i === messages.length - 1}
-            isUserMessage={message.role === "user"}
-          />
-        ))
+        <>
+          {messages.map((message, i) => (
+            <Message
+              key={i}
+              content={message.content}
+              isLoading={false}
+              isUserMessage={message.role === "user"}
+            />
+          ))}
+          {messages[messages.length - 1]?.role === "user" && isLoading && (
+            <Message
+              key={messages.length}
+              content=""
+              isLoading={true}
+              isUserMessage={false}
+            />
+          )}
+        </>
       ) : (
         <div className="flex-1 flex flex-col items-center justify-center gap-2">
           <MessageSquare className="size-8 text-blue-500" />
