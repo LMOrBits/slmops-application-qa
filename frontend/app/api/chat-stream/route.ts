@@ -1,18 +1,26 @@
-import { openai } from "@ai-sdk/openai";
+import { openai, createOpenAI } from "@ai-sdk/openai";
 import { NextRequest } from "next/server";
 import { streamText } from "ai";
-
+import { cookies } from "next/headers";
+import { CHAT_API_URL } from "@/config/chatBackend";
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export const POST = async (req: NextRequest) => {
-  const { messages, sessionId } = await req.json();
-
-  const lastMessage = messages[messages.length - 1].content;
-
+  const cookieStore = cookies();
+  const session_id = cookieStore.get("sessionId");
+  const { messages } = await req.json();
+  const lastMessage = messages[messages.length - 1];
+  const customEndpoint = createOpenAI({
+    baseURL: CHAT_API_URL,
+    headers: {
+      Cookie: `session_id=${session_id?.value}`,
+    },
+    compatibility: "compatible",
+  });
   const result = streamText({
-    model: openai("gpt-4-turbo"),
-    messages,
+    model: customEndpoint("gpt-4o-mini"),
+    messages: [lastMessage],
   });
 
   return result.toDataStreamResponse();

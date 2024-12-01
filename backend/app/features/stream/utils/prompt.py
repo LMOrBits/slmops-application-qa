@@ -1,5 +1,7 @@
+from datetime import datetime
 import json
 from enum import Enum
+import uuid
 from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
 from pydantic import BaseModel
 import base64
@@ -23,6 +25,11 @@ class ToolInvocation(BaseModel):
     args: Any
     result: Any
 
+class UIMessage(BaseModel):
+    id: Optional[uuid.UUID | str] = None
+    content: str
+    createdAt: Optional[str | datetime] = None
+    role: str
 
 class ClientMessage(BaseModel):
     role: str

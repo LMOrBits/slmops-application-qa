@@ -74,10 +74,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarGroup>
           <SidebarMenu>
             {loading ? (
-              <SidebarMenuItem>
-                <Skeleton className="h-10 w-full rounded-lg" />
-              </SidebarMenuItem>
+              // <SidebarMenuItem>
+              <Skeleton className="h-10 w-full rounded-lg" />
             ) : (
+              // </SidebarMenuItem>
               <>
                 <div className="flex items-center gap-2 my-[10px]  px-2 size-8 w-full">
                   <Button

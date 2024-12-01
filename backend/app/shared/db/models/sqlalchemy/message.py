@@ -23,10 +23,10 @@ class Message(SQLModel, table=True):
 
     def export(self):
         return {
-            "message_id": self.Id,
-            "message_text": self.message_text,
-            "created_at": self.created_at,
-            "user_id": self.user_id,
+            "id": self.Id,
+            "content": self.message_text,
+            "createdAt": self.created_at,
+            "userId": self.user_id,
             "role": "user" if self.user_id != uuid.UUID(int=0) else "ai",
-            "message_type": self.message_type,
+            "type": self.message_type,
         }

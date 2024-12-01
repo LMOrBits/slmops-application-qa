@@ -1,10 +1,14 @@
 import uuid
 from datetime import datetime
-from fastapi import Request,Cookie,Depends,HTTPException
+from fastapi import Request,Cookie,Depends,HTTPException,Query
 from fastapi.responses import JSONResponse
 from app.api.utils import create_router,get_user_id
 from app.features.chats import ChatService
-
+from app.features.stream.main import stream_text,convert_to_openai_messages,ClientMessage
+from fastapi.responses import StreamingResponse
+from app.shared.log.log_config import get_logger
+import asyncio
+logger = get_logger()
 router = create_router(__file__)
 
 
@@ -37,4 +41,5 @@ async def delete_chat(request: Request, chat_id: str, user_id: uuid.UUID = Depen
         return {"status": "success"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
+
+
