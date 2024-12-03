@@ -5,13 +5,15 @@ from sqlmodel import select, func
 
 from app.shared.db.init import session_scope
 from app.shared.db.models.sqlalchemy import Chat, Feedback, Message
+from app.shared.log.log_config import get_logger
+logger = get_logger()
 
 
 class ChatService:
     @classmethod
-    def create_chat(cls, user_id: uuid.UUID, created_at: datetime) -> uuid.UUID:
+    def create_chat(cls, user_id: uuid.UUID, created_at: datetime, title:str) -> uuid.UUID:
         with session_scope() as session:
-            chat = Chat(user_id=user_id, created_at=created_at)
+            chat = Chat(user_id=user_id, created_at=created_at,title=title)
             session.add(chat)
             return chat.Id
         
@@ -45,10 +47,9 @@ class ChatService:
             # result = session.exec(statement).all()
             # valid_chats = [{"chat_id": chat_id, "message": message} for chat_id, message in result]
             # return valid_chats
-
-            statement = select(Chat.Id).where(Chat.user_id == user_id).order_by(Chat.created_at.desc())
-            return session.exec(statement).all()
-
+            statement = select(Chat).where(Chat.user_id == user_id).order_by(Chat.created_at.desc())
+            all_chats= session.exec(statement).all()
+            return [chat.export() for chat in all_chats]
     @classmethod
     def get_messages_for_user_based_on_chat(cls, chat_id: uuid.UUID):
         with session_scope() as session:

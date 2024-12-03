@@ -1,7 +1,8 @@
 import sentry_sdk
-from fastapi import FastAPI
+from fastapi import FastAPI,Request
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
+
 
 from app.api.routes import collect_all_routers
 from app.shared.config import settings
@@ -21,23 +22,20 @@ app = FastAPI(
 
 )
 
+
+
 # Set all CORS enabled origins
-# if settings.all_cors_origins:
-#     app.add_middleware(
-#         CORSMiddleware,
-#         allow_origins=settings.all_cors_origins,
-#         allow_credentials=True,
-#         allow_methods=["*"],
-#         allow_headers=["*"],
-#     )
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins="*",
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+if settings.all_cors_origins:
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.all_cors_origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
+    
+
 for route in collect_all_routers():
     route.routes = [r for r in route.routes if "/mock/" not in getattr(r, 'path', '')]
     app.include_router(route)
-

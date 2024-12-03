@@ -6,6 +6,8 @@ from sqlmodel import select
 
 from app.shared.db.init import session_scope
 from app.shared.db.models.sqlalchemy import Cookie, User
+from app.shared.log.log_config import get_logger
+logger = get_logger()
 
 
 class CookiesService:
@@ -21,6 +23,7 @@ class CookiesService:
 
     @classmethod
     def get_user_by_cookie(cls, cookie_id: uuid.UUID) -> uuid.UUID:
+        assert isinstance(cookie_id,uuid.UUID)
         with session_scope() as session:
             statement = select(Cookie.user_id).where(Cookie.Id == cookie_id)
             return session.exec(statement).first()
@@ -34,4 +37,5 @@ class CookiesService:
             )
             session.add(new_user)
             session.add(new_cookie)
+            logger.info(new_user.Id)
             return new_user.Id, new_cookie.Id

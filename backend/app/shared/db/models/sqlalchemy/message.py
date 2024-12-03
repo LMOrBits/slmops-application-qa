@@ -23,7 +23,7 @@ class Message(SQLModel, table=True):
 
     def export(self):
         return {
-            "id": self.Id,
+            "id": str(self.Id),
             "content": self.message_text,
             "createdAt": self.created_at,
             "userId": self.user_id,

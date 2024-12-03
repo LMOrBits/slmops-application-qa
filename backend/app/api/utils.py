@@ -25,6 +25,7 @@ def get_user_id(request: Request, session_id: Optional[str] = Cookie(None))-> uu
             raise HTTPException(status_code=404, detail="Please reset the cookie")
         logger.info(f"cookie_id: {cookie_id}")
         user = CookiesService.get_user_by_cookie(cookie_id)
+        logger.info(f"user_id: {user}")
         if not user:
             logger.error("User not found. Please reset the cookie.")
             raise HTTPException(status_code=404, detail="User not found. Please reset the cookie.")

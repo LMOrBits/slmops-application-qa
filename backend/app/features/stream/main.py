@@ -12,6 +12,7 @@ from openai import OpenAI
 from .utils.prompt import ClientMessage, convert_to_openai_messages
 from .utils.tools import get_current_weather
 from app.shared.log.log_config import get_logger
+from litellm import completion
 
 logger = get_logger()
 
@@ -32,70 +33,20 @@ available_tools = {
 }
 
 
-def do_stream(messages: List[ChatCompletionMessageParam]):
-    stream = client.chat.completions.create(
-        messages=messages,
-        model="gpt-4o",
-        stream=True,
-        tools=[{
-            "type": "function",
-            "function": {
-                "name": "get_current_weather",
-                "description": "Get the current weather at a location",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "latitude": {
-                            "type": "number",
-                            "description": "The latitude of the location",
-                        },
-                        "longitude": {
-                            "type": "number",
-                            "description": "The longitude of the location",
-                        },
-                    },
-                    "required": ["latitude", "longitude"],
-                },
-            },
-        }]
-    )
-
-    return stream
 
 async def stream_text(messages: List[ChatCompletionMessageParam], protocol: str = 'data'):
     draft_tool_calls = []
     draft_tool_calls_index = -1
-  
-
-    stream = client.chat.completions.create(
+    
+    logger.info(f"messages: {messages}")
+    stream = completion(
+        model="ollama/llama2",
         messages=messages,
-        model="gpt-4o",
+        api_base="http://localhost:11434",
         stream=True,
-        tools=[{
-            "type": "function",
-            "function": {
-                "name": "get_current_weather",
-                "description": "Get the current weather at a location",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "latitude": {
-                            "type": "number",
-                            "description": "The latitude of the location",
-                        },
-                        "longitude": {
-                            "type": "number",
-                            "description": "The longitude of the location",
-                        },
-                    },
-                    "required": ["latitude", "longitude"],
-                },
-            },
-        }]
     )
 
     for chunk in stream:
-        
         for choice in chunk.choices:
             if choice.finish_reason == "stop":
                 continue
@@ -146,4 +97,5 @@ async def stream_text(messages: List[ChatCompletionMessageParam], protocol: str 
                 completion=completion_tokens
             ),None
      
+
 

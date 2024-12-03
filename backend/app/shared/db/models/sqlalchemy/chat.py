@@ -13,6 +13,14 @@ class Chat(SQLModel, table=True):
         foreign_key="user.Id",
         nullable=False,
     )
+    title:str = Field(primary_key=False, nullable=False)
 
     user: "User" = Relationship(back_populates="chats")
     messages: list["Message"] = Relationship(back_populates="chat")
+
+    def export(self):
+        return {
+            "id":str(self.Id),
+            "title":self.title
+            
+        }
