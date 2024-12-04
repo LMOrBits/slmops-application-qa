@@ -16,7 +16,6 @@ dependencies = [
     "httpx<1.0.0,>=0.25.1",
     "psycopg[binary]<4.0.0,>=3.1.13",
     "sqlmodel<1.0.0,>=0.0.21",
-    # Pin bcrypt until passlib supports the latest
     "bcrypt==4.0.1",
     "pydantic-settings<3.0.0,>=2.2.1",
     "sentry-sdk[fastapi]<2.0.0,>=1.40.6",
@@ -24,10 +23,11 @@ dependencies = [
     "loguru>=0.7.2",
     "python-dotenv>=1.0.1",
     "openai>=1.55.1",
+    "litellm>=1.53.1",
+    "chromadb>=0.5.21",
     "langchain>=0.3.9",
     "langchain-community>=0.3.9",
-    "litellm>=1.53.1",
-    "opik>=1.2.0",
+    "langchain-openai>=0.2.10",
 ]
 
 [tool.uv]

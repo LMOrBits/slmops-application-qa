@@ -17,7 +17,7 @@ def load_router_from_file(file_path, collected_routes: list):
             if hasattr(module, "router"):
                 collected_routes.append(module.router)
         except Exception as error:
-            logger.error(f"Failed to load module {module_name}: {error}")
+            logger.error(f"Failed to load module {module} {module_name}: {error}")
 
 
 def collect_all_routers():

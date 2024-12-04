@@ -1,10 +1,8 @@
 import uuid
-from datetime import datetime
-from fastapi import Request,Cookie,Depends,HTTPException
-from fastapi.responses import JSONResponse
+from fastapi import Request,Depends
 from app.api.utils import create_router,get_user_id
 from app.features.chats import ChatService
-from app.features.stream.utils.prompt import UIMessage
+from app.shared.types import UIMessage
 router = create_router(__file__)
 
 @router.get('/{chat_id}', tags=["Messages"])

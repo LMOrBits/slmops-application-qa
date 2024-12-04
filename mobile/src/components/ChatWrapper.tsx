@@ -15,7 +15,7 @@ export const ChatWrapper = ({ chatId }: { chatId: string }) => {
   const navigate = useNavigate();
   const { messages: initialMessages, isLoading: isLoadingHistory } =
     useLoadHistory(chatId);
-  console.log("chatId", chatId, initialMessages);
+
   const {
     messages,
     handleInputChange,
@@ -50,7 +50,6 @@ export const ChatWrapper = ({ chatId }: { chatId: string }) => {
 
   // Handle initial system message
   useEffect(() => {
-    console.log("---chatId", chatId, initialMessages);
     if (chatId && initialMessages?.length === 1) {
       handleChatSubmit(undefined, { allowEmptySubmit: true });
     }

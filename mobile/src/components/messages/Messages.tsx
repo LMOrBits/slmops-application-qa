@@ -65,7 +65,7 @@ export const Messages = ({ messages, isLoading }: MessagesProps) => {
           {messages.map((message, i) => (
             <Message
               key={i}
-              content={message.content}
+              message={message}
               isLoading={false}
               isUserMessage={message.role === "user"}
             />
@@ -73,7 +73,11 @@ export const Messages = ({ messages, isLoading }: MessagesProps) => {
           {messages[messages.length - 1]?.role === "user" && isLoading && (
             <Message
               key={messages.length}
-              content=""
+              message={{
+                id: "",
+                content: "",
+                role: "assistant",
+              }}
               isLoading={true}
               isUserMessage={false}
             />

@@ -15,7 +15,6 @@ export const useFetchChats = (id: string) => {
   const [chats, setChats] = useState<ChatItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  console.log("chats", chats);
   useEffect(() => {
     const fetchChats = async () => {
       try {

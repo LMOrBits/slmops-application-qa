@@ -1,41 +1,7 @@
-from datetime import datetime
 import json
-from enum import Enum
-import uuid
 from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
-from pydantic import BaseModel
-import base64
-from typing import List, Optional, Any
-
-class ClientAttachment(BaseModel):
-    name: str
-    contentType: str
-    url: str
-
-
-class ToolInvocationState(str, Enum):
-    CALL = 'call'
-    PARTIAL_CALL = 'partial-call'
-    RESULT = 'result'
-
-class ToolInvocation(BaseModel):
-    state: ToolInvocationState
-    toolCallId: str
-    toolName: str
-    args: Any
-    result: Any
-
-class UIMessage(BaseModel):
-    id: Optional[uuid.UUID | str] = None
-    content: str
-    createdAt: Optional[str | datetime] = None
-    role: str
-
-class ClientMessage(BaseModel):
-    role: str
-    content: str
-    experimental_attachments: Optional[List[ClientAttachment]] = None
-    toolInvocations: Optional[List[ToolInvocation]] = None
+from typing import List
+from app.shared.types import ClientMessage
 
 def convert_to_openai_messages(messages: List[ClientMessage]) -> List[ChatCompletionMessageParam]:
     openai_messages = []
