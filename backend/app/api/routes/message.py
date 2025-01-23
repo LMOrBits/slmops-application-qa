@@ -33,7 +33,7 @@ async def create_message(request: Request,chat_id: str, protocol: str = Query('d
                 async for chunk,raw_chunk in stream_text([message]):
                     if await request.is_disconnected():
                         break
-                    if type(raw_chunk) == str:
+                    if isinstance(raw_chunk,str):
                         answer_cache += raw_chunk
                     yield chunk
                 logger.warning(answer_cache) 

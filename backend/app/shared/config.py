@@ -28,6 +28,17 @@ def parse_cors(v: Any) -> list[str] | str:
     raise ValueError(v)
 
 
+
+def check_dir(v: str) -> str:
+    if v.startswith("/"):
+        if not Path(v).exists():
+            raise ValueError(f"{v} does not exist")
+    else:
+        path = Path(__file__).parent.parent.parent / v
+        if not path.exists():
+            raise ValueError(f"{path} does not exist")
+    return str(path.absolute())
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         # Use top level .env file (one level above ./backend/)
@@ -127,6 +138,26 @@ class Settings(BaseSettings):
         return self
 
     CHAT_DB: str = "chat"
+    
+    VECTOREDB_DIR: str | None = None
+    @model_validator(mode="after")
+    def _check_vectoredb_dir(self) -> Self:
+        if self.VECTOREDB_DIR:
+            self.VECTOREDB_DIR = check_dir(self.VECTOREDB_DIR)
+        return self
+    
+    RAG_DATA_DIR: str | None = None
+    @model_validator(mode="after")
+    def _check_rag_data_dir(self) -> Self:
+        if self.RAG_DATA_DIR:
+            self.RAG_DATA_DIR = check_dir(self.RAG_DATA_DIR)
+        return self
+    
+    
+    STATUS: Literal["DEV", "PROD", "MOBILE"] = "DEV"
+
+    
+
 
 
 settings = Settings()  # type: ignore

@@ -25,12 +25,12 @@ class ToolCallResult(BaseModel):
     result: List[Reference]
 
     def list_dict(self):
-        return [r.dict() for r in self.result]
+        return [r.model_dump() for r in self.result]
 
 class VercelStream:
     @staticmethod
     def stream_text(text:str):
-        return f'0:"{text}"\n',None
+        return f'0:"{text}"\n',text
 
     @staticmethod
     def stream_tool_call(tool_call:ToolCall , results:ToolCallResult):
