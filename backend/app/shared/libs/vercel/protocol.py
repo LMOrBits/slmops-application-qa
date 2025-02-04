@@ -30,7 +30,7 @@ class ToolCallResult(BaseModel):
 class VercelStream:
     @staticmethod
     def stream_text(text:str):
-        return f'0:"{text}"\n',text
+        return f'0:{json.dumps(text)}\n',text
 
     @staticmethod
     def stream_tool_call(tool_call:ToolCall , results:ToolCallResult):

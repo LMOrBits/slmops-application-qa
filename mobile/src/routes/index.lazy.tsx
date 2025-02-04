@@ -1,13 +1,14 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
-
+import Landing from '../app/Landing'
 export const Route = createLazyFileRoute('/')({
   component: Index,
 })
 
 function Index() {
   return (
-    <div className="p-2">
-      <h3>Welcome Home!</h3>
-    </div>
+    
+      <div className="flex items-center justify-center min-h-screen">
+          <Landing />
+      </div>
   )
 }

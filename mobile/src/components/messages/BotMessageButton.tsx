@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 import { MouseEventHandler, ReactNode } from "react";
 
 export const BotMessageButton = ({

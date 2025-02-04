@@ -2,7 +2,6 @@ import {
   createContext,
   useContext,
   useState,
-  useEffect,
   ReactNode,
 } from "react";
 import { CHAT_API_URL } from "@/config/chatBackend";
@@ -35,6 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const login = async (password: string) => {
+    setIsLoading(true);
     try {
       const {
         data: { cookie },
@@ -58,6 +58,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error("Login failed:", error);
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 

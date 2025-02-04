@@ -1,37 +1,33 @@
-import React from "react";
 import {
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   useDisclosure,
-} from "@nextui-org/modal";
-import { Button } from "@nextui-org/button";
+} from "@heroui/modal";
+import { Button } from "@heroui/button";
 import ReactMarkdown from "react-markdown";
 
-interface ReferencesProps {
-  reference: {
-    id: string;
-    content: string;
-  };
+export interface ReferencesProps {
+  title: string;
+  content: string;
 }
 
-export default function References({ reference }: ReferencesProps) {
+export default function References({ reference }: { reference: ReferencesProps }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <div key={reference.id}>
+    <div key={reference.title}>
       <div>
         <Button
-          key={reference.id}
+          key={reference.title}
           variant="flat"
           color="success"
           radius="md"
           onPress={onOpen}
           className="capitalize text-xs w-fit min-w-fit px-2  min-h-fit h-fit text-foreground/80"
         >
-          {reference.id}
+          {reference.title}
         </Button>
       </div>
       <Modal
@@ -42,10 +38,10 @@ export default function References({ reference }: ReferencesProps) {
         className="w-[80dvw] max-w-[80dvw]"
       >
         <ModalContent>
-          {(onClose) => (
+          {() => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {reference.id}
+                {reference.title}
               </ModalHeader>
               <ModalBody>
                 {reference.content && (

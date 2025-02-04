@@ -1,5 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import { Outlet, Link, useNavigate } from "@tanstack/react-router";
+import { Outlet,  useNavigate } from "@tanstack/react-router";
 import { FilePlus } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -7,7 +7,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 // const options = [
 //   linkOptions({
 //     to: "/playground",
@@ -31,20 +31,20 @@ export default function Dashboard() {
       <AppSidebar className="h-[100dvh] bg-transparent" />
       <SidebarInset className="h-[100dvh]">
         <header className="fixed z-[25] bg-background  top-0 flex h-[46px] w-full shrink-0 items-center gap-2 border-b px-4">
-          <SidebarTrigger className="-ml-1" />
+          <SidebarTrigger className="ml-1" />
           {/* <Link to="/playground/chat"> */}
           <Button
             startContent={<FilePlus className="size-4" />}
             radius="lg"
             color="primary"
             variant="light"
-            className="text-foreground w-full min-w-1"
+            className="text-foreground  min-w-1"
             onClick={() =>
               navigate({
-                search: (prev) => ({
-                  ...prev,
-                  id: undefined,
-                }),
+                to: '.',
+                search: {
+                  id: undefined
+                },
                 replace: true,
               })
             }

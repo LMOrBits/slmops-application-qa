@@ -14,11 +14,13 @@ from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
 #                     verbose=True,
 #                     )
 
-model = ChatLiteLLM(model="ollama/llama2",
+model = ChatLiteLLM(
                     stream=True,
-                    temperature=0.0,
+                    temperature=0.5,
                     verbose=True,
-                    api_base="http://localhost:11434",
+                    model="openai/custom",               
+                    api_key="none",                  
+                    api_base="http://localhost:8080/v1",   
                     )
 
 

@@ -25,9 +25,10 @@ async def stream_text(messages: List[ClientMessage], protocol: str = 'data'):
     draft_tool_calls_index = -1
 
     stream = completion(
-        model="ollama/llama2",
+        model="openai/custom",               
+        api_key="none",                  
+        api_base="http://localhost:8080/v1", 
         messages=[message.model_dump() for message in messages],
-        api_base="http://localhost:11434",
         stream=True,
     )
 

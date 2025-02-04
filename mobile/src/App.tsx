@@ -6,7 +6,7 @@ import { RouterProvider } from "@tanstack/react-router";
 
 import { router } from "./router";
 import { useAuth } from "./providers/auth";
-import { NextUIProvider } from "@nextui-org/system";
+import { HeroUIProvider } from "@heroui/system";
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
   interface Register {
@@ -22,11 +22,11 @@ function InnerApp() {
 const App: React.FC = () => {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <NextUIProvider>
+      <HeroUIProvider>
         <AuthProvider>
           <InnerApp />
         </AuthProvider>
-      </NextUIProvider>
+      </HeroUIProvider>
     </ThemeProvider>
   );
 };

@@ -4,7 +4,7 @@ import { coldarkDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import showdown from "showdown";
 
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 import { generateId } from "ai";
 import { Check, Copy, Download } from "lucide-react";
 
@@ -74,7 +74,7 @@ const CodeBlock: FC<Props> = memo(({ language, value }) => {
     if (typeof window === "undefined") return;
 
     const suggestedFileName = `file-${generateId()}${fileExtension}`;
-    const fileName = window.prompt("Enter file name" || "", suggestedFileName);
+    const fileName = window.prompt("Enter file name" , suggestedFileName || "");
 
     if (!fileName) return;
 

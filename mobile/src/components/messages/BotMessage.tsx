@@ -1,19 +1,22 @@
 import { useCallback, memo } from "react";
-import { CodeBlock } from "@/components/messages/Codeblock";
 import BotMessageButton from "@/components/messages/BotMessageButton";
 import { Bot, Copy, ThumbsDown, ThumbsUp, Repeat } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { Skeleton } from "@nextui-org/skeleton";
+import { Skeleton } from "@heroui/skeleton";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { type Message as TMessage } from "ai/react";
 import { type ToolInvocation } from "ai";
-import References from "./References";
+import References, { type ReferencesProps } from "./References";
+import { markdownComponents } from './markdownComponents';
+
+
 interface MessageProps {
   message: TMessage;
   isUserMessage: boolean;
   isLoading: boolean;
 }
+
 // Separate the buttons into their own component
 const MessageActions = memo(({ onCopy }: { onCopy: () => void }) => {
   return (
@@ -38,34 +41,6 @@ const MessageActions = memo(({ onCopy }: { onCopy: () => void }) => {
   );
 });
 
-// Memoize the markdown components configuration
-const markdownComponents = {
-  code({ className, children, ...props }) {
-    const match = /language-(\w+)/.exec(className || "");
-    const isInline = !match;
-
-    if (isInline) {
-      return (
-        <code className={className} {...props}>
-          {children}
-        </code>
-      );
-    }
-
-    const codeContent = String(children).replace(/\n$/, "");
-    const key = `code-${btoa(encodeURIComponent(codeContent))}`;
-
-    return (
-      <CodeBlock
-        key={key}
-        language={(match && match[1]) || ""}
-        value={codeContent}
-        {...props}
-      />
-    );
-  },
-};
-
 // Main component using memo
 export const BotMessage = memo(({ message, isLoading }: MessageProps) => {
   const handleCopy = useCallback(async () => {
@@ -77,7 +52,6 @@ export const BotMessage = memo(({ message, isLoading }: MessageProps) => {
     }
   }, [message.content]);
 
-  console.log(message);
   return (
     <div className="flex w-full gap-4">
       <div className="shrink-0 rounded-full flex justify-center items-start">
@@ -104,7 +78,7 @@ export const BotMessage = memo(({ message, isLoading }: MessageProps) => {
                 className="prose-sm prose-neutral prose-a:text-accent-foreground/50 whitespace-pre-wrap"
                 components={markdownComponents}
               >
-                {message.content}
+                {`${message.content}`}
               </ReactMarkdown>
               <div className="text-xs text-foreground/50 bg-primary/10 rounded-md py-1 w-fit px-2">
                 {JSON.stringify(message.data)}
@@ -116,19 +90,19 @@ export const BotMessage = memo(({ message, isLoading }: MessageProps) => {
                   transition={{ delay: 0.2 }}
                   className=""
                 >
-                  {message.toolInvocations?.map((tool: ToolInvocation) =>
-                    tool.state !== "result" ? (
-                      <span key={tool.toolCallId}>
-                        {JSON.stringify(tool.result)}
-                      </span>
-                    ) : (
+                  {message.toolInvocations?.map((tool: ToolInvocation, index: number) =>
+                    tool.state === "result" ? (
                       tool.args?.type === "references" && (
-                        <div className="flex flex-row flex-wrap gap-2 ">
-                          {tool.result.map((reference, i) => (
-                            <References key={i} reference={reference} />
+                        <div key={`references-${tool.toolCallId}-${index}`} className="flex flex-row flex-wrap gap-2 ">
+                          {tool.result.map((reference: ReferencesProps, i: number) => (
+                            <References key={`reference-${tool.toolCallId}-${i}`} reference={reference} />
                           ))}
                         </div>
                       )
+                    ) : (
+                      <span key={`tool-${tool.toolCallId}-${index}`}>
+                        {JSON.stringify(tool)}
+                      </span>
                     )
                   )}
                 </motion.div>
