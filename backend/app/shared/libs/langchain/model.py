@@ -1,5 +1,5 @@
 from langchain_community.chat_models import ChatLiteLLM
-from langchain_openai import ChatOpenAI
+# from langchain_openai import ChatOpenAI
 from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
 
 

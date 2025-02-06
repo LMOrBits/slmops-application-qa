@@ -88,7 +88,7 @@ def pretty_print_docs(docs):
     return answer
 
 # splitter = CharacterTextSplitter(chunk_size=300, chunk_overlap=0, separator=". ")
-from langchain_openai import ChatOpenAI
+# from langchain_openai import ChatOpenAI
 # openai_model = ChatOpenAI(model="gpt-4o-mini")
 redundant_filter = EmbeddingsRedundantFilter(embeddings=embeddings)
 relevant_filter = EmbeddingsFilter(embeddings=embeddings, similarity_threshold=0.7)
