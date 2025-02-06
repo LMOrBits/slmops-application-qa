@@ -19,6 +19,7 @@ stop-model:
 model-status:
 	cd slm/packages/serve && ${MAKE} status
 
+model-update: run-model 
 
 run-app:
 	cp -r ./secrets/backend/.env ./backend/
