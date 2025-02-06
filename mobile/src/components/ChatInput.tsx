@@ -1,5 +1,5 @@
-import { Button } from "@nextui-org/button";
-import { Textarea } from "@nextui-org/input";
+import { Button } from "@heroui/button";
+import { Textarea } from "@heroui/input";
 import { SendHorizontal, StopCircle } from "lucide-react";
 import { type useChat } from "ai/react";
 import { motion, AnimatePresence } from "framer-motion";

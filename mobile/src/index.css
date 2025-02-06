@@ -90,15 +90,15 @@ body {
   body {
     @apply bg-background text-foreground min-h-[100dvh] h-full;
   }
-  a {
+  a:not(:has(button)) {
     @apply text-sm border border-foreground/50 bg-primary/80 py-1 rounded-xl px-3 decoration-1 transition-colors duration-200 inline-flex items-center gap-2;
   }
 
-
-  a:hover {
+  a:not(:has(button)):hover {
     @apply border-foreground decoration-2 transition-colors duration-200;
   }
-
+ 
+ 
   .markdown-content {
     padding: 0px !important;
     * {
@@ -107,7 +107,7 @@ body {
       word-wrap: break-word;
       overflow-wrap: break-word;
 
-      @apply inline-block text-sm m-0 p-0 font-sans;
+      @apply inline-block text-medium m-0 py-1 font-sans;
     }
 
     h1,
@@ -116,13 +116,12 @@ body {
     h4,
     h5,
     h6 {
-      @apply text-lg font-bold mb-1;
+      @apply text-large font-bold mt-2;
     }
 
     a {
       @apply text-sm border border-foreground/50 bg-primary/80 py-1 rounded-xl px-3 decoration-1 transition-colors duration-200 inline-flex items-center gap-2;
     }
-
 
     a:hover {
       @apply border-foreground decoration-2 transition-colors duration-200;
@@ -141,12 +140,12 @@ body {
     }
 
     ul {
-      @apply inline-block text-sm list-disc list-inside;
+      @apply text-sm list-disc font-thin;
     }
 
     li,
     ol {
-      @apply text-sm list-disc list-inside;
+      @apply text-sm list-disc text-foreground/90 font-thin;
     }
 
     blockquote {

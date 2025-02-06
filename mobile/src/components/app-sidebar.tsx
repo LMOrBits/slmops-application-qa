@@ -20,8 +20,8 @@ import {
   SidebarMenuSub,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { Skeleton } from "@nextui-org/skeleton";
-import { Button } from "@nextui-org/button";
+import { Skeleton } from "@heroui/skeleton";
+import { Button } from "@heroui/button";
 import { AnimatePresence, motion } from "framer-motion";
 
 // This is sample data.
@@ -46,7 +46,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   };
 
   return (
-    <Sidebar {...props}>
+    (<Sidebar {...props}>
       <SidebarHeader className="bg-background">
         <SidebarMenu>
           <SidebarMenuItem>
@@ -59,14 +59,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenu>
             {loading ? (
               // <SidebarMenuItem>
-              <Skeleton className="h-10 w-full rounded-lg" />
+              (<Skeleton className="h-10 w-full rounded-lg" />)
             ) : (
               // </SidebarMenuItem>
-              <>
+              (<>
                 {data.navMain.map((item, index) => (
-                  <AnimatePresence>
+                  <AnimatePresence key={item.title}>
                     <Collapsible
-                      key={item.title}
                       defaultOpen={index === 1}
                       className="group/collapsible"
                     >
@@ -85,6 +84,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             <SidebarMenuSub className="flex flex-col gap-1 mt-2">
                               {item.items.map((item) => (
                                 <motion.div
+                                  key={item.id}
                                   initial={{ y: -10, opacity: 0 }}
                                   animate={{ y: 0, opacity: 1 }}
                                   exit={{ y: -10, opacity: 0 }}
@@ -99,10 +99,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                     size="md"
                                     onClick={() => {
                                       navigate({
-                                        search: (prev) => ({
-                                          ...prev,
-                                          id: item.id,
-                                        }),
+                                        to: '.',
+                                        search: {
+                                          id: item.id
+                                        },
+                                        replace: true,
                                       });
                                     }}
                                   >
@@ -118,12 +119,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     </Collapsible>
                   </AnimatePresence>
                 ))}
-              </>
+              </>)
             )}
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
       <SidebarRail />
-    </Sidebar>
+    </Sidebar>)
   );
 }

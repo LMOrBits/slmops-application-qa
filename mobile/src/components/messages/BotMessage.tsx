@@ -1,16 +1,22 @@
 import { useCallback, memo } from "react";
-import { CodeBlock } from "@/components/messages/Codeblock";
 import BotMessageButton from "@/components/messages/BotMessageButton";
 import { Bot, Copy, ThumbsDown, ThumbsUp, Repeat } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { Skeleton } from "@nextui-org/skeleton";
+import { Skeleton } from "@heroui/skeleton";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { type Message as TMessage } from "ai/react";
+import { type ToolInvocation } from "ai";
+import References, { type ReferencesProps } from "./References";
+import { markdownComponents } from './markdownComponents';
+
+
 interface MessageProps {
-  content: string;
+  message: TMessage;
   isUserMessage: boolean;
   isLoading: boolean;
 }
+
 // Separate the buttons into their own component
 const MessageActions = memo(({ onCopy }: { onCopy: () => void }) => {
   return (
@@ -35,44 +41,16 @@ const MessageActions = memo(({ onCopy }: { onCopy: () => void }) => {
   );
 });
 
-// Memoize the markdown components configuration
-const markdownComponents = {
-  code({ className, children, ...props }) {
-    const match = /language-(\w+)/.exec(className || "");
-    const isInline = !match;
-
-    if (isInline) {
-      return (
-        <code className={className} {...props}>
-          {children}
-        </code>
-      );
-    }
-
-    const codeContent = String(children).replace(/\n$/, "");
-    const key = `code-${btoa(encodeURIComponent(codeContent))}`;
-
-    return (
-      <CodeBlock
-        key={key}
-        language={(match && match[1]) || ""}
-        value={codeContent}
-        {...props}
-      />
-    );
-  },
-};
-
 // Main component using memo
-export const BotMessage = memo(({ content, isLoading }: MessageProps) => {
+export const BotMessage = memo(({ message, isLoading }: MessageProps) => {
   const handleCopy = useCallback(async () => {
-    if (!content) return;
+    if (!message.content) return;
     try {
-      await navigator.clipboard.writeText(content);
+      await navigator.clipboard.writeText(message.content);
     } catch (err) {
       console.error("Copy failed:", err);
     }
-  }, [content]);
+  }, [message.content]);
 
   return (
     <div className="flex w-full gap-4">
@@ -95,12 +73,41 @@ export const BotMessage = memo(({ content, isLoading }: MessageProps) => {
               <Skeleton className="h-3 w-1/5 rounded-lg" />
             </motion.div>
           ) : (
-            <ReactMarkdown
-              className="prose-sm prose-neutral prose-a:text-accent-foreground/50 whitespace-pre-wrap"
-              components={markdownComponents}
-            >
-              {content}
-            </ReactMarkdown>
+            <div className="flex flex-col">
+              <ReactMarkdown
+                className="prose-sm prose-neutral prose-a:text-accent-foreground/50 whitespace-pre-wrap"
+                components={markdownComponents}
+              >
+                {`${message.content}`}
+              </ReactMarkdown>
+              <div className="text-xs text-foreground/50 bg-primary/10 rounded-md py-1 w-fit px-2">
+                {JSON.stringify(message.data)}
+              </div>
+              {message.toolInvocations && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className=""
+                >
+                  {message.toolInvocations?.map((tool: ToolInvocation, index: number) =>
+                    tool.state === "result" ? (
+                      tool.args?.type === "references" && (
+                        <div key={`references-${tool.toolCallId}-${index}`} className="flex flex-row flex-wrap gap-2 ">
+                          {tool.result.map((reference: ReferencesProps, i: number) => (
+                            <References key={`reference-${tool.toolCallId}-${i}`} reference={reference} />
+                          ))}
+                        </div>
+                      )
+                    ) : (
+                      <span key={`tool-${tool.toolCallId}-${index}`}>
+                        {JSON.stringify(tool)}
+                      </span>
+                    )
+                  )}
+                </motion.div>
+              )}
+            </div>
           )}
         </AnimatePresence>
         <MessageActions onCopy={handleCopy} />

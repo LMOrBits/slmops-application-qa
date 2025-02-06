@@ -7,7 +7,7 @@ import { createChat } from "@/lib/chatserver/connections";
 
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Spinner } from "@nextui-org/spinner";
+import { Spinner } from "@heroui/spinner";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 
@@ -15,7 +15,7 @@ export const ChatWrapper = ({ chatId }: { chatId: string }) => {
   const navigate = useNavigate();
   const { messages: initialMessages, isLoading: isLoadingHistory } =
     useLoadHistory(chatId);
-  console.log("chatId", chatId, initialMessages);
+
   const {
     messages,
     handleInputChange,
@@ -50,7 +50,6 @@ export const ChatWrapper = ({ chatId }: { chatId: string }) => {
 
   // Handle initial system message
   useEffect(() => {
-    console.log("---chatId", chatId, initialMessages);
     if (chatId && initialMessages?.length === 1) {
       handleChatSubmit(undefined, { allowEmptySubmit: true });
     }

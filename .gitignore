@@ -1,3 +1,4 @@
+secrets/
 # Python
 *.pyc
 *.pyo
@@ -57,7 +58,7 @@ jspm_packages/
 
 # Production
 build/
-dist/
+# dist/
 
 # Static files
 *.lock
@@ -73,3 +74,6 @@ Thumbs.db
 *.rej
 *.swo
 *.swn
+
+
+slm/

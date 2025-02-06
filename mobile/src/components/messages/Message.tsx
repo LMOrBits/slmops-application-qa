@@ -1,14 +1,14 @@
 import { BotMessage } from "@/components/messages/BotMessage";
 import { UserMessage } from "@/components/messages/UserMessage";
-
+import { type Message as TMessage } from "ai/react";
 interface MessageProps {
-  content: string;
+  message: TMessage;
   isUserMessage: boolean;
   isLoading: boolean;
 }
 
 export const Message = ({
-  content,
+  message,
   isUserMessage,
   isLoading,
 }: MessageProps) => {
@@ -16,10 +16,10 @@ export const Message = ({
     <div className="lg:p-6 sm:p-4 xs:px-3 py-4 ">
       <div className="max-w-3xl mx-auto flex items-end">
         {isUserMessage ? (
-          <UserMessage content={content} isUserMessage={true} />
+          <UserMessage message={message} isUserMessage={true} />
         ) : (
           <BotMessage
-            content={content}
+            message={message}
             isUserMessage={false}
             isLoading={isLoading}
           />

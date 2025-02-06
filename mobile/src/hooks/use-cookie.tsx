@@ -13,6 +13,7 @@ export const useCookie = () => {
     }
     const fetchCookie = async () => {
       const response = await axios.get<Response>(`${CHAT_API_URL}/cookie`);
+      document.cookie = response.data.cookie;
     };
     fetchCookie();
   }, []);

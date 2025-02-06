@@ -1,28 +1,30 @@
 import asyncio
 import uuid
-from datetime import datetime
-from app.features.stream.utils.prompt import ClientMessage
-from fastapi import Request,Cookie,Depends,HTTPException,Query
-from fastapi.responses import JSONResponse
-from app.api.utils import create_router,get_user_id
-from app.features.chats import ChatService,MessageService
-from app.features.stream.main import stream_text,convert_to_openai_messages
+
 from fastapi.responses import StreamingResponse
+from fastapi import Request,Depends,Query
+
+from app.api.utils import create_router,get_user_id
+from app.features.chats import MessageService
+from app.features.stream.main import stream_text
 from app.shared.log.log_config import get_logger
+from app.shared.types import ClientMessage
+
 logger = get_logger()
 router = create_router(__file__)
+
 
 @router.post('/completions/{chat_id}', tags=["Message"])
 async def create_message(request: Request,chat_id: str, protocol: str = Query('data'), user_id: uuid.UUID = Depends(get_user_id)):
     chat_id = uuid.UUID(chat_id)
     json_body = await request.json()
-    messages = [ClientMessage(**message).model_dump() for message in json_body['messages']]
+    messages = [ClientMessage(**message) for message in json_body['messages']]
     need_to_add_user_message = len(messages)>1
     message = messages[-1]
     logger.log("DEV",message)
-    if message['role'] == "user":
+    if message.role == "user":
         if need_to_add_user_message:
-            MessageService.create_user_message(chat_id=chat_id,message_text=message['content'],user_id=user_id)
+            MessageService.create_user_message(chat_id=chat_id,message_text=message.content,user_id=user_id)
         # openai_messages = convert_to_openai_messages(messages)
         
         async def stream_generator():
@@ -31,7 +33,8 @@ async def create_message(request: Request,chat_id: str, protocol: str = Query('d
                 async for chunk,raw_chunk in stream_text([message]):
                     if await request.is_disconnected():
                         break
-                    answer_cache += raw_chunk
+                    if isinstance(raw_chunk,str):
+                        answer_cache += raw_chunk
                     yield chunk
                 logger.warning(answer_cache) 
                 MessageService.create_bot_message(chat_id,answer_cache)
