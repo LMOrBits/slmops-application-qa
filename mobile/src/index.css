@@ -90,14 +90,15 @@ body {
   body {
     @apply bg-background text-foreground min-h-[100dvh] h-full;
   }
-  a {
-    @apply text-sm;
+  a:not(:has(button)) {
+    @apply text-sm border border-foreground/50 bg-primary/80 py-1 rounded-xl px-3 decoration-1 transition-colors duration-200 inline-flex items-center gap-2;
   }
 
-  a:hover {
-    @apply transition-colors duration-200;
+  a:not(:has(button)):hover {
+    @apply border-foreground decoration-2 transition-colors duration-200;
   }
-
+ 
+ 
   .markdown-content {
     padding: 0px !important;
     * {

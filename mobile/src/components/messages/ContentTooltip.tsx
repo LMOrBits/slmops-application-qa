@@ -9,7 +9,6 @@ interface ContentTooltipProps {
 export const ContentTooltip = memo(({ children, tag = "think" }: ContentTooltipProps) => {
   // Regex to match <think> ... </think>
   const regex = new RegExp(`<${tag}>([\\\s\\\S]*?)<\/${tag}>`, 'g');
-  console.log(children);
   const parts = [];
   let lastIndex = 0;
   let match;
