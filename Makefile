@@ -1,4 +1,4 @@
-.PHONY: all
+.PHONY: all run-model run-app stop-model stop-app run-all stop-all model-status
 
 # if having truble with git credentials, install git-credential-manager
 # brew install --cask git-credential-manager
