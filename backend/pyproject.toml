@@ -2,7 +2,7 @@
 name = "app"
 version = "0.1.0"
 description = ""
-requires-python = ">=3.9,<3.12"
+requires-python = ">=3.12"
 dependencies = [
     "fastapi[standard]<1.0.0,>=0.114.2",
     "python-multipart<1.0.0,>=0.0.7",
@@ -18,17 +18,11 @@ dependencies = [
     "sqlmodel<1.0.0,>=0.0.21",
     "bcrypt==4.0.1",
     "pydantic-settings<3.0.0,>=2.2.1",
-    "sentry-sdk[fastapi]<2.0.0,>=1.40.6",
     "pyjwt<3.0.0,>=2.8.0",
     "loguru>=0.7.2",
     "python-dotenv>=1.0.1",
-    "openai>=1.55.1",
-    "litellm>=1.53.1",
-    "langchain>=0.3.9",
-    "langchain-community>=0.3.9",
-    "langchain-openai>=0.2.10",
-    "langchain-chroma>=0.1.2",
-    "fastembed>=0.4.2",
+    "go-task-bin>=3.43.3",
+    "airplane-simple-chatbot",
 ]
 
 [tool.uv]
@@ -43,7 +37,10 @@ dev-dependencies = [
 ]
 
 [tool.uv.workspace]
-members = ["packages/slm", "packages/slmapp", "packages/slmmodel", "model"]
+members = ["integrations/airplane_simple_chatbot"]
+
+[tool.uv.sources]
+airplane-simple-chatbot = { workspace = true }
 
 [build-system]
 requires = ["hatchling"]

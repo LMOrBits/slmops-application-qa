@@ -1,0 +1,22 @@
+version: 3
+
+tasks:
+  pyapp-deps-update:
+    cmds:
+      - git submodule update --remote --recursive
+
+  pyapp-deps-init:
+    cmds:
+      - git submodule update --init --recursive
+
+  pyapp-init:
+    dir: ./integrations/airplane_simple_chatbot
+    cmds:
+      - uv run pyapp-cli run
+
+  pyapp-test:
+    cmds:
+      # - task: pyapp-deps-init
+      # - task: pyapp-init
+      - cd ./integrations/airplane_simple_chatbot
+      - uv run inference

@@ -1,0 +1,4 @@
+[submodule "backend/integrations/airplane_simple_chatbot"]
+	path = backend/integrations/airplane_simple_chatbot
+	url = https://github.com/Parsa-Mir/lmorbits.airplane_simple_chatbot.git
+	branch = main
