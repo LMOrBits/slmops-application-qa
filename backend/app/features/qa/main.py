@@ -1,3 +1,3 @@
-from app.shared.libs.langchain.qa import retrieval_chain
+from airplane_simple_chatbot.main import app_stream
 
-main_chain = retrieval_chain
+main_chain = app_stream

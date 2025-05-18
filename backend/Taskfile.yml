@@ -20,3 +20,8 @@ tasks:
       # - task: pyapp-init
       - cd ./integrations/airplane_simple_chatbot
       - uv run inference
+
+  run:
+    cmds:
+      - task: pyapp-init
+      - uv run uvicorn app.api.main:app --host 0.0.0.0 --port 8000

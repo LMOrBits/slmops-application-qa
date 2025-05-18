@@ -21,7 +21,6 @@ async def create_message(request: Request,chat_id: str, protocol: str = Query('d
     messages = [ClientMessage(**message) for message in json_body['messages']]
     need_to_add_user_message = len(messages)>1
     message = messages[-1]
-    logger.log("DEV",message)
     if message.role == "user":
         if need_to_add_user_message:
             MessageService.create_user_message(chat_id=chat_id,message_text=message.content,user_id=user_id)

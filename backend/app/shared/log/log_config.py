@@ -8,11 +8,17 @@ from pathlib import Path
 from loguru import logger
 from loguru._logger import Logger
 
-logger.level("DEV", no=38, color="<cyan>", icon="⭐")
-logger.level("INIT", no=39, color="<green>", icon="🚀🚀🚀🚀")
-logger.level("TIME", no=39, color="<yellow>", icon="⌛")
-logger.level("LLM", no=15, color="<blue>", icon="🧠")
-logger.level("CHECK", no=27, color="<yellow>", icon="✅")
+# Only define levels if they don't already exist
+# if "DEV" not in logger._core.levels:
+#     logger.level("DEV", no=38, color="<cyan>", icon="⭐")
+# if "INIT" not in logger._core.levels:
+#     logger.level("INIT", no=39, color="<green>", icon="🚀🚀🚀🚀")
+# if "TIME" not in logger._core.levels:
+#     logger.level("TIME", no=39, color="<yellow>", icon="⌛")
+# if "LLM" not in logger._core.levels:
+#     logger.level("LLM", no=15, color="<blue>", icon="🧠")
+# if "CHECK" not in logger._core.levels:
+#     logger.level("CHECK", no=27, color="<yellow>", icon="✅")
 
 
 def level_filter(level="DEBUG"):
