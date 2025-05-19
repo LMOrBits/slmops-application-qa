@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from enum import Enum
-from typing import List
+from typing import List,Optional
 import json
 
 class ToolCallType(Enum):
@@ -15,6 +15,7 @@ class ToolCallResultType(BaseModel):
 class Reference(BaseModel):
     id: int | str
     content: str
+    link: Optional[str] = None
 
 class ToolCall(BaseModel):
     toolCallId: str

@@ -24,7 +24,7 @@ def convert_messages_to_langchain(messages: List[ClientMessage]):
 
 async def stream_tool_call(messages: List[ClientMessage],chain, protocol: str = 'data'):  
   messages_langchain = convert_messages_to_langchain(messages)
-  async for event , _ in chain(messages_langchain , session_id="123"):
+  async for event , link in chain(messages_langchain , session_id="123"):
       kind = event["event"]
       if kind == "on_chat_model_stream":
           yield VercelStream.stream_text(event['data']['chunk'].content)
@@ -39,6 +39,10 @@ async def stream_tool_call(messages: List[ClientMessage],chain, protocol: str = 
         tool_result = ToolCallResult(result=docs)
         for t in VercelStream.stream_tool_call(tool_call,tool_result):
             yield t 
+  tool_call = ToolCall(toolCallId=event['run_id']+"-observe",toolName="streaming-tool",args=ToolCallResultType(type=ToolCallType.REFERENCES))
+  tool_result = ToolCallResult(result=[Reference(id=10,content=link,link=link)])
+  for t in VercelStream.stream_tool_call(tool_call,tool_result):
+    yield t
   yield VercelStream.stream_finish(10,20)
     
 
